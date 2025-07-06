@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinterest Pin Generator</title>
+    <title>Pinterest Pin Generator Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Oswald:wght@700&family=Montserrat:wght@900&family=Anton&family=Bebas+Neue&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&family=Oswald:wght@400;700&family=Montserrat:wght@900&family=Anton&family=Bebas+Neue&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Oswald', sans-serif; /* Default font set to Oswald */
             background-color: #111827; /* bg-gray-900 */
         }
         .canvas-container {
@@ -28,550 +28,869 @@
         canvas:active {
             cursor: grabbing;
         }
-        /* Custom Radio Buttons */
-        .layout-selector input:checked + label {
-            background-color: #8B5CF6; /* violet-500 */
-            color: white;
-            border-color: #7C3AED; /* violet-600 */
-        }
         .star-btn.saved {
             color: #FBBF24; /* yellow-400 */
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239CA3AF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            background-size: 0.65rem auto;
         }
     </style>
 </head>
 <body class="text-gray-200 min-h-screen flex items-center justify-center p-4">
 
-    <div class="w-full max-w-6xl mx-auto">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-black text-white" style="font-family: 'Anton', sans-serif;">Pinterest Pin Generator</h1>
-            <p class="text-gray-400 mt-2">Create stunning 2 or 4 image collage pins.</p>
-        </header>
+<div class="w-full max-w-6xl mx-auto">
+    <header class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-black text-white" style="font-family: 'Anton', sans-serif;">Pinterest Pin Generator Pro</h1>
+        <p class="text-gray-400 mt-2">Create stunning collage pins with powerful branding tools.</p>
+    </header>
 
-        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
 
-            <!-- Controls Panel -->
-            <div class="w-full lg:w-1/3 bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-3">
-                    <h2 class="text-2xl font-bold text-white">Customize Your Pin</h2>
-                    <button id="savePrefsBtn" class="star-btn text-gray-400 hover:text-yellow-400 transition-colors" title="Save Preferences">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                    </button>
+        <!-- Controls Panel -->
+        <div class="w-full lg:w-1/3 bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-3">
+                <h2 class="text-2xl font-bold text-white">Customize Your Pin</h2>
+                <button id="savePrefsBtn" class="star-btn text-gray-400 hover:text-yellow-400 transition-colors" title="Save Preferences">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                </button>
+            </div>
+
+            <!-- Templates Section -->
+            <div class="mb-6">
+                <label class="block text-sm font-bold mb-2">My Templates</label>
+                <div class="flex gap-2">
+                    <select id="templateSelector" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                        <option value="">Load a template...</option>
+                    </select>
+                    <button id="saveTemplateBtn" class="px-3 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-sm" title="Save Current Style as New Template">Save New</button>
+                    <button id="deleteTemplateBtn" class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm hidden" title="Delete Selected Template">Delete</button>
                 </div>
-                
-                <!-- Layout Selector -->
-                <div class="mb-6">
-                    <label class="block text-sm font-bold mb-2">Layout</label>
-                    <div class="layout-selector grid grid-cols-2 gap-2 rounded-lg bg-gray-700 p-1">
-                        <input type="radio" name="layout" id="layout-2" value="2-grid" class="sr-only" checked>
-                        <label for="layout-2" class="text-center cursor-pointer py-2 px-4 rounded-md transition-colors border-2 border-transparent">2 Images</label>
-                        
-                        <input type="radio" name="layout" id="layout-4" value="4-grid" class="sr-only">
-                        <label for="layout-4" class="text-center cursor-pointer py-2 px-4 rounded-md transition-colors border-2 border-transparent">4 Images</label>
-                    </div>
-                </div>
+            </div>
 
-                <!-- Image Upload -->
-                <div class="mb-6">
+            <!-- Image & Logo Upload -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
                     <label class="block text-sm font-bold mb-2">Images</label>
-                    <input type="file" id="imageInput" accept="image/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-900/50 file:text-violet-300 hover:file:bg-violet-900">
+                    <input type="file" id="imageInput" accept="image/*" multiple class="block w-full text-sm text-transparent file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-900/50 file:text-violet-300 hover:file:bg-violet-900">
                 </div>
-
-                <!-- Text & Font Controls -->
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-bold mb-2" for="pinText">Bolt Text</label>
-                        <input type="text" id="pinText" placeholder="Your Text" value="SUMMER VIBES" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-2" for="fontSelector">Font</label>
-                        <select id="fontSelector" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"></select>
-                    </div>
-                </div>
-
-                <!-- Color Palette -->
-                <div class="mb-6">
-                    <label class="block text-sm font-bold mb-2">Theme Color</label>
-                    <div class="flex items-center gap-3">
-                        <div id="colorPalette" class="flex flex-wrap gap-3"></div>
-                        <button id="randomColorBtn" class="p-2 bg-gray-700 hover:bg-gray-600 rounded-full transition-transform hover:rotate-45" title="Randomize Colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M3 16v-4h4"></path><path d="M21 8V4h-4"></path></svg>
+                <div>
+                    <label class="block text-sm font-bold mb-2">Logo</label>
+                    <div class="flex items-center gap-2">
+                        <input type="file" id="logoInput" accept="image/png, image/svg+xml" class="block w-full text-sm text-transparent file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-600/50 file:text-gray-300 hover:file:bg-gray-600">
+                        <button id="generateBrandingBtn" class="p-2 bg-indigo-700 hover:bg-indigo-600 rounded-full transition-transform hover:scale-110 hidden" title="Generate Branding Colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.41 1.41L8 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4l-2.59-2.59L12 3Z"/><path d="M7 15h10"/></svg>
                         </button>
                     </div>
                 </div>
-
-                <!-- Text Design Selector -->
-                <div class="mb-8">
-                    <label class="block text-sm font-bold mb-2" for="textDesignSelector">Text Design</label>
-                    <select id="textDesignSelector" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
-                        <option value="solid-pro">Solid & Sharp</option>
-                        <option value="wave">Wave</option>
-                        <option value="staggered">Staggered</option>
-                        <option value="angled">Angled</option>
-                    </select>
-                </div>
-                
-                <!-- Download Button -->
-                <div class="mt-auto">
-                    <button id="downloadButton" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-black py-3 px-4 rounded-lg flex items-center justify-center transition-transform hover:scale-105 shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        Download Pin (JPG)
-                    </button>
-                </div>
-
+            </div>
+            <div class="flex items-center gap-2 mb-6">
+                <button id="swapImagesBtn" class="flex-1 py-2 px-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm" title="Swap Unlocked Images">Swap</button>
+                <button id="shuffleImagesBtn" class="flex-1 py-2 px-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-sm hidden" title="Shuffle Unlocked Images">Shuffle</button>
             </div>
 
-            <!-- Canvas Preview -->
-            <div class="w-full lg:w-2/3 flex items-center justify-center">
-                <div id="canvas-container" class="canvas-container overflow-hidden bg-gray-700">
-                    <canvas id="pinCanvas"></canvas>
+            <!-- Text & Font Controls -->
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="pinText">Headline Text</label>
+                    <input type="text" id="pinText" placeholder="Your Headline" value="SUMMER VIBES" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
                 </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="secondaryText">URL / Username</label>
+                    <input type="text" id="secondaryText" placeholder="yourwebsite.com" value="" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500">
+                </div>
+            </div>
+
+            <!-- Color Palette -->
+            <div class="mb-8">
+                <label class="block text-sm font-bold mb-2">Theme Color</label>
+                <div class="flex items-center gap-3">
+                    <div id="colorPalette" class="flex flex-wrap gap-3"></div>
+                    <button id="autoColorBtn" class="p-2 bg-gray-700 hover:bg-gray-600 rounded-full transition-transform hover:rotate-45" title="Suggest Palette from Images">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M17 18H9"/></svg>
+                    </button>
+                    <button id="generatePaletteBtn" class="p-2 bg-blue-700 hover:bg-blue-600 rounded-full transition-transform hover:scale-110 hidden" title="Generate Better Palette">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2.5a1.5 1.5 0 0 1 3 0"/><path d="M6.13 6.13a1.5 1.5 0 0 1 2.12 0l.92.92a1.5 1.5 0 0 1-2.12 2.12l-.92-.92a1.5 1.5 0 0 1 0-2.12Z"/><path d="M14.83 6.13a1.5 1.5 0 0 1 2.12 0l.92.92a1.5 1.5 0 0 1-2.12 2.12l-.92-.92a1.5 1.5 0 0 1 0-2.12Z"/><path d="M9.5 15.5a1.5 1.5 0 0 1 3 0"/><path d="M6.13 17.87a1.5 1.5 0 0 1 2.12 0l.92.92a1.5 1.5 0 1 1-2.12 2.12l-.92-.92a1.5 1.5 0 0 1 0-2.12Z"/><path d="M14.83 17.87a1.5 1.5 0 0 1 2.12 0l.92.92a1.5 1.5 0 1 1-2.12 2.12l-.92-.92a1.5 1.5 0 0 1 0-2.12Z"/><path d="M2.5 9.5a1.5 1.5 0 0 1 0 3"/><path d="M15.5 9.5a1.5 1.5 0 0 1 0 3"/><path d="M12 6V3"/><path d="M12 21v-3"/><path d="M21 12h-3"/><path d="M6 12H3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="mt-auto">
+                <button id="downloadButton" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-black py-3 px-4 rounded-lg flex items-center justify-center transition-transform hover:scale-105 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Download Pin (JPG)
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Canvas Preview -->
+        <div class="w-full lg:w-2/3 flex items-center justify-center">
+            <div id="canvas-container" class="canvas-container overflow-hidden bg-gray-700">
+                <canvas id="pinCanvas"></canvas>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // --- DOM Elements ---
-        const canvas = document.getElementById('pinCanvas');
-        const ctx = canvas.getContext('2d');
-        const imageInput = document.getElementById('imageInput');
-        const pinTextInput = document.getElementById('pinText');
-        const downloadButton = document.getElementById('downloadButton');
-        const colorPaletteContainer = document.getElementById('colorPalette');
-        const fontSelector = document.getElementById('fontSelector');
-        const randomColorBtn = document.getElementById('randomColorBtn');
-        const textDesignSelector = document.getElementById('textDesignSelector');
-        const layoutRadios = document.querySelectorAll('input[name="layout"]');
-        const savePrefsBtn = document.getElementById('savePrefsBtn');
+<script>
+// --- DOM Elements ---
+const canvas = document.getElementById('pinCanvas');
+const ctx = canvas.getContext('2d');
+const imageInput = document.getElementById('imageInput');
+const logoInput = document.getElementById('logoInput');
+const pinTextInput = document.getElementById('pinText');
+const secondaryTextInput = document.getElementById('secondaryText');
+const downloadButton = document.getElementById('downloadButton');
+const colorPaletteContainer = document.getElementById('colorPalette');
+const savePrefsBtn = document.getElementById('savePrefsBtn');
+const swapImagesBtn = document.getElementById('swapImagesBtn');
+const shuffleImagesBtn = document.getElementById('shuffleImagesBtn');
+const autoColorBtn = document.getElementById('autoColorBtn');
+const generatePaletteBtn = document.getElementById('generatePaletteBtn');
+const generateBrandingBtn = document.getElementById('generateBrandingBtn');
+const saveTemplateBtn = document.getElementById('saveTemplateBtn');
+const deleteTemplateBtn = document.getElementById('deleteTemplateBtn');
+const templateSelector = document.getElementById('templateSelector');
 
-        // --- Configuration ---
-        const CANVAS_WIDTH = 1000;
-        const CANVAS_HEIGHT = 1778;
-        canvas.width = CANVAS_WIDTH;
-        canvas.height = CANVAS_HEIGHT;
+// --- Configuration ---
+const CANVAS_WIDTH = 1000;
+const CANVAS_HEIGHT = 1778;
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
 
-        const fonts = ['Poppins', 'Anton', 'Bebas Neue', 'Oswald', 'Montserrat', 'Playfair Display'];
-        const colorPalettes = [
-            { name: 'Classic', text: '#FFFFFF', stroke: '#000000' },
-            { name: 'Navy & Gold', text: '#FFD700', stroke: '#000080' },
-            { name: 'Forest & Peach', text: '#FFDAB9', stroke: '#004225' },
-            { name: 'Maroon & Cream', text: '#FDF4E3', stroke: '#800000' },
-            { name: 'Teal & Pink', text: '#FADADD', stroke: '#0D7377' },
-        ];
+// Font list for reference, though selection UI is removed
+const fonts = ['Poppins', 'Anton', 'Bebas Neue', 'Oswald', 'Montserrat', 'Playfair Display'];
+const defaultColorPalettes = [
+    { name: 'Classic', text: '#FFFFFF', stroke: '#000000' },
+    { name: 'Navy & Gold', text: '#FFD700', stroke: '#000080' },
+    { name: 'Forest & Peach', text: '#FFDAB9', stroke: '#004225' },
+    { name: 'Maroon & Cream', text: '#FDF4E3', stroke: '#800000' },
+    { name: 'Teal & Pink', text: '#FADADD', stroke: '#0D7377' },
+    { name: 'Coral & Deep Blue', text: '#FF7F50', stroke: '#00008B' },
+    { name: 'Hot Pink & Black', text: '#FF69B4', stroke: '#000000' },
+    { name: 'Electric Lime & Purple', text: '#CCFF00', stroke: '#4B0082' },
+    { name: 'Turquoise & Orange', text: '#40E0D0', stroke: '#FF4500' },
+    { name: 'Sky Blue & Magenta', text: '#87CEEB', stroke: '#FF00FF' },
+    { name: 'Sunny Yellow & Royal Blue', text: '#FFD700', stroke: '#4169E1' },
+];
 
-        let state = {
-            images: [],
-            layout: '2-grid',
-            text: pinTextInput.value,
-            fontFamily: fonts[0],
-            textColor: colorPalettes[0].text,
-            textStrokeColor: colorPalettes[0].stroke,
-            textDesign: 'solid-pro',
-        };
+let state = {
+    images: [],
+    allUploadedImages: [],
+    logoImage: null,
+    logoSrc: null,
+    locks: [false, false],
+    layout: '2-grid',
+    text: pinTextInput.value,
+    secondaryText: secondaryTextInput.value,
+    fontFamily: 'Oswald', // Default font
+    textColor: defaultColorPalettes[0].text,
+    textStrokeColor: defaultColorPalettes[0].stroke,
+    textDesign: 'solid-pro', // Default text design
+    brandingPalette: null,
+};
 
-        // --- Dragging State ---
-        let isDragging = false;
-        let dragTargetIndex = -1;
-        let startX, startY;
-        
-        // --- Layout Definitions ---
-        const GAP = 8;
-        const layouts = {
-            '2-grid': [
-                { x: 0, y: 0, width: CANVAS_WIDTH, height: (CANVAS_HEIGHT - GAP) / 2 },
-                { x: 0, y: (CANVAS_HEIGHT + GAP) / 2, width: CANVAS_WIDTH, height: (CANVAS_HEIGHT - GAP) / 2 },
-            ],
-            '4-grid': [
-                { x: 0, y: 0, width: (CANVAS_WIDTH - GAP) / 2, height: (CANVAS_HEIGHT - GAP) / 2 },
-                { x: (CANVAS_WIDTH + GAP) / 2, y: 0, width: (CANVAS_WIDTH - GAP) / 2, height: (CANVAS_HEIGHT - GAP) / 2 },
-                { x: 0, y: (CANVAS_HEIGHT + GAP) / 2, width: (CANVAS_WIDTH - GAP) / 2, height: (CANVAS_HEIGHT - GAP) / 2 },
-                { x: (CANVAS_WIDTH + GAP) / 2, y: (CANVAS_HEIGHT + GAP) / 2, width: (CANVAS_WIDTH - GAP) / 2, height: (CANVAS_HEIGHT - GAP) / 2 },
-            ]
-        };
+// --- Dragging State ---
+let isDragging = false;
+let dragTargetIndex = -1;
+let startX, startY;
 
-        // --- Utility Functions ---
-        function getFontWeight(fontFamily) { 
-            return ['Montserrat', 'Poppins', 'Playfair Display'].includes(fontFamily) ? '900' : '';
-        }
-        function wrapText(text, maxWidth, fontFamily, fontSize) {
+// --- Layout Definitions ---
+const GAP = 8;
+const layouts = {
+    '2-grid': [
+        { x: 0, y: 0, width: CANVAS_WIDTH, height: (CANVAS_HEIGHT - GAP) / 2 },
+        { x: 0, y: (CANVAS_HEIGHT + GAP) / 2, width: CANVAS_WIDTH, height: (CANVAS_HEIGHT - GAP) / 2 },
+    ]
+};
+
+// --- Utility Functions ---
+function getFontWeight(fontFamily) {
+    // Oswald uses '700' for bold, which is loaded in the HTML head.
+    return ['Montserrat', 'Poppins', 'Playfair Display', 'Oswald'].includes(fontFamily) ? '700' : '';
+}
+
+function wrapText(text, maxWidth, fontFamily, fontSize) {
+    const weight = getFontWeight(fontFamily);
+    ctx.font = `${weight} ${fontSize}px '${fontFamily}'`;
+    const words = text.toUpperCase().split(' ');
+    let lines = [], currentLine = words[0] || '';
+    for (let i = 1; i < words.length; i++) {
+        const testLine = currentLine + ' ' + words[i];
+        if (ctx.measureText(testLine).width > maxWidth) {
+            lines.push(currentLine);
+            currentLine = words[i];
+        } else { currentLine = testLine; }
+    }
+    lines.push(currentLine);
+    return lines;
+}
+
+function getFittedTextInfo(text, fontFamily, maxWidth) {
+    let fontSize = 150, lines = [];
+    while (fontSize > 10) {
+        lines = wrapText(text, maxWidth, fontFamily, fontSize);
+        if (lines.length <= 2) {
+            const longestLine = lines.reduce((a, b) => ctx.measureText(a).width > ctx.measureText(b).width ? a : b, '');
             const weight = getFontWeight(fontFamily);
             ctx.font = `${weight} ${fontSize}px '${fontFamily}'`;
-            const words = text.toUpperCase().split(' ');
-            let lines = [], currentLine = words[0] || '';
-            for (let i = 1; i < words.length; i++) {
-                const testLine = currentLine + ' ' + words[i];
-                if (ctx.measureText(testLine).width > maxWidth) {
-                    lines.push(currentLine);
-                    currentLine = words[i];
-                } else { currentLine = testLine; }
-            }
-            lines.push(currentLine);
-            return lines;
+            if (ctx.measureText(longestLine).width <= maxWidth) return { lines, fontSize, longestLine };
         }
-        function getFittedTextInfo(text, fontFamily, maxWidth) {
-            let fontSize = 150, lines = [];
-            while (fontSize > 10) {
-                lines = wrapText(text, maxWidth, fontFamily, fontSize);
-                if (lines.length <= 2) {
-                    const longestLine = lines.reduce((a, b) => ctx.measureText(a).width > ctx.measureText(b).width ? a : b, '');
-                    const weight = getFontWeight(fontFamily);
-                    ctx.font = `${weight} ${fontSize}px '${fontFamily}'`;
-                    if (ctx.measureText(longestLine).width <= maxWidth) return { lines, fontSize, longestLine };
-                }
-                fontSize--;
-            }
-            return { lines, fontSize, longestLine: lines[0] || '' };
-        }
-        function hexToRgb(hex) {
-            let r = 0, g = 0, b = 0;
-            if (hex.length == 4) {
-                r = "0x" + hex[1] + hex[1];
-                g = "0x" + hex[2] + hex[2];
-                b = "0x" + hex[3] + hex[3];
-            } else if (hex.length == 7) {
-                r = "0x" + hex[1] + hex[2];
-                g = "0x" + hex[3] + hex[4];
-                b = "0x" + hex[5] + hex[6];
-            }
-            return [parseInt(r), parseInt(g), parseInt(b)];
-        }
-        function getLuminance(hex) {
-            const rgb = hexToRgb(hex);
-            const [r, g, b] = rgb.map(c => {
-                c /= 255;
-                return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-            });
-            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        }
-        function getContrast(hex1, hex2) {
-            const lum1 = getLuminance(hex1);
-            const lum2 = getLuminance(hex2);
-            const lighter = Math.max(lum1, lum2);
-            const darker = Math.min(lum1, lum2);
-            return (lighter + 0.05) / (darker + 0.05);
-        }
-        function generateRandomHexColor() {
-            return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-        }
-        function sanitizeFilename(text) {
-            if (!text) {
-                return 'pinterest-pin';
-            }
-            return text
-                .toLowerCase()
-                .replace(/\s+/g, '-') // Replace spaces with -
-                .replace(/[^\w-]+/g, '') // Remove all non-word chars except -
-                .replace(/--+/g, '-') // Replace multiple - with single -
-                .replace(/^-+/, '') // Trim - from start of text
-                .replace(/-+$/, ''); // Trim - from end of text
-        }
-        
-        // --- Core Drawing Function ---
-        function drawCanvas() {
+        fontSize--;
+    }
+    return { lines, fontSize, longestLine: lines[0] || '' };
+}
+
+function sanitizeFilename(text) {
+    if (!text) return 'pinterest-pin';
+    return text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+}
+
+function hexToRgb(hex) {
+    let r = 0, g = 0, b = 0;
+    if (hex.length == 4) { r = "0x" + hex[1] + hex[1]; g = "0x" + hex[2] + hex[2]; b = "0x" + hex[3] + hex[3]; }
+    else if (hex.length == 7) { r = "0x" + hex[1] + hex[2]; g = "0x" + hex[3] + hex[4]; b = "0x" + hex[5] + hex[6]; }
+    return [parseInt(r), parseInt(g), parseInt(b)];
+}
+
+function rgbToHex(r, g, b) { return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase(); }
+
+function colorDistance(rgb1, rgb2) {
+    const rDiff = rgb1[0] - rgb2[0]; const gDiff = rgb1[1] - rgb2[1]; const bDiff = rgb1[2] - rgb2[2];
+    return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+}
+
+function getLuminance(hex) {
+    const rgb = hexToRgb(hex);
+    const [r, g, b] = rgb.map(c => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function getContrast(hex1, hex2) {
+    const lum1 = getLuminance(hex1); const lum2 = getLuminance(hex2);
+    const lighter = Math.max(lum1, lum2); const darker = Math.min(lum1, lum2);
+    return (lighter + 0.05) / (darker + 0.05);
+}
+
+// --- Core Drawing Function ---
+function drawCanvas() {
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.fillStyle = state.textStrokeColor;
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    layouts[state.layout].forEach((rect, index) => drawImage(state.images[index], rect));
+
+    if (state.text) drawTextWithSelectedStyle();
+    if (state.secondaryText || state.logoImage) drawBrandingBlock();
+    drawLockIcons();
+}
+
+function drawLockIcons() {
+    layouts[state.layout].forEach((rect, index) => {
+        if (!state.images[index]) return;
+        const iconSize = 40, padding = 15;
+        const iconX = rect.x + rect.width - iconSize / 2 - padding;
+        const iconY = rect.y + iconSize / 2 + padding;
+        ctx.save();
+        ctx.font = `${iconSize}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.beginPath();
+        ctx.arc(iconX, iconY, iconSize / 2 + 5, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillText(state.locks[index] ? '🔒' : '🔓', iconX, iconY);
+        ctx.restore();
+    });
+}
+
+function drawTextWithSelectedStyle() {
+    const maxWidth = CANVAS_WIDTH - 60;
+    const { lines, fontSize, longestLine } = getFittedTextInfo(state.text, state.fontFamily, maxWidth);
+    const weight = getFontWeight(state.fontFamily);
+    ctx.font = `${weight} ${fontSize}px '${state.fontFamily}'`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const lineHeight = fontSize * 1.1;
+    const totalTextHeight = lines.length * lineHeight;
+    const startY = (CANVAS_HEIGHT / 2) - (totalTextHeight / 2) + (lineHeight / 2);
+    ctx.save();
+    
+    // The default is 'solid-pro', other cases are kept for template compatibility
+    switch (state.textDesign) {
+        case 'solid-pro':
+        default:
+            const padding = fontSize * 0.3;
+            const bgWidth = ctx.measureText(longestLine).width + padding * 2;
+            const bgHeight = totalTextHeight + padding;
+            const bgX = (CANVAS_WIDTH / 2) - (bgWidth / 2);
+            const bgY = (CANVAS_HEIGHT / 2) - (bgHeight / 2);
             ctx.fillStyle = state.textStrokeColor;
-            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-            const currentLayout = layouts[state.layout];
-            currentLayout.forEach((rect, index) => {
-                const imageState = state.images[index];
-                drawImage(imageState, rect);
+            ctx.fillRect(bgX, bgY, bgWidth, bgHeight);
+            ctx.strokeStyle = state.textColor;
+            ctx.lineWidth = 4;
+            ctx.strokeRect(bgX + 2, bgY + 2, bgWidth - 4, bgHeight - 4);
+            lines.forEach((line, index) => {
+                const yPos = startY + (index * lineHeight);
+                ctx.fillStyle = state.textColor;
+                ctx.fillText(line, CANVAS_WIDTH / 2, yPos);
             });
+            break;
+    }
+    ctx.restore();
+}
 
-            if (state.text) {
-                drawTextWithSelectedStyle();
+function drawBrandingBlock() {
+    const blockPadding = 20;
+    const itemSpacing = 10;
+    let totalHeight = 0;
+    let maxWidth = 0;
+
+    let logoHeight = 0, logoWidth = 0;
+    if (state.logoImage) {
+        logoHeight = 60;
+        logoWidth = (state.logoImage.width / state.logoImage.height) * logoHeight;
+        totalHeight += logoHeight;
+        maxWidth = Math.max(maxWidth, logoWidth);
+    }
+
+    let textHeight = 0, textWidth = 0;
+    if (state.secondaryText) {
+        ctx.font = "bold 32px 'Poppins'";
+        const textMetrics = ctx.measureText(state.secondaryText);
+        textHeight = 32;
+        textWidth = textMetrics.width;
+        if (totalHeight > 0) totalHeight += itemSpacing;
+        totalHeight += textHeight;
+        maxWidth = Math.max(maxWidth, textWidth);
+    }
+
+    if (totalHeight === 0) return;
+
+    const blockWidth = maxWidth + blockPadding * 2;
+    const blockHeight = totalHeight + blockPadding * 2;
+    const blockX = (CANVAS_WIDTH - blockWidth) / 2;
+    const blockY = CANVAS_HEIGHT - blockHeight - 20;
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.fillRect(blockX, blockY, blockWidth, blockHeight);
+
+    let currentY = blockY + blockPadding;
+
+    if (state.logoImage) {
+        const logoX = blockX + (blockWidth - logoWidth) / 2;
+        ctx.drawImage(state.logoImage, logoX, currentY, logoWidth, logoHeight);
+        currentY += logoHeight + itemSpacing;
+    }
+
+    if (state.secondaryText) {
+        ctx.font = "bold 32px 'Poppins'";
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(state.secondaryText, CANVAS_WIDTH / 2, currentY);
+    }
+}
+
+function drawImage(imageState, rect) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(rect.x, rect.y, rect.width, rect.height);
+    ctx.clip();
+    if (imageState && imageState.img) {
+        const containerAspect = rect.width / rect.height;
+        const imageAspect = imageState.originalWidth / imageState.originalHeight;
+        const scale = containerAspect > imageAspect ? rect.width / imageState.originalWidth : rect.height / imageState.originalHeight;
+        const scaledWidth = imageState.originalWidth * scale;
+        const scaledHeight = imageState.originalHeight * scale;
+        const centerX = rect.x + (rect.width - scaledWidth) / 2;
+        const centerY = rect.y + (rect.height - scaledHeight) / 2;
+        const drawX = centerX + (imageState.dx || 0);
+        const drawY = centerY + (imageState.dy || 0);
+        ctx.drawImage(imageState.img, drawX, drawY, scaledWidth, scaledHeight);
+    } else {
+        ctx.fillStyle = '#E5E7EB';
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+        ctx.fillStyle = '#9CA3AF';
+        ctx.font = "bold 30px 'Poppins'";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`SLOT`, rect.x + rect.width / 2, rect.y + rect.height / 2);
+    }
+    ctx.restore();
+}
+
+// --- Image and Color Analysis ---
+function getDominantColorsFromImage(image, count = 5) {
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    const sampleSize = 20;
+    tempCanvas.width = sampleSize;
+    tempCanvas.height = sampleSize;
+    tempCtx.drawImage(image, 0, 0, sampleSize, sampleSize);
+
+    const imageData = tempCtx.getImageData(0, 0, sampleSize, sampleSize).data;
+    const colorBuckets = {};
+    const quantizationFactor = 16;
+
+    for (let i = 0; i < imageData.length; i += 4) {
+        if (imageData[i + 3] < 128 || (imageData[i] > 250 && imageData[i+1] > 250 && imageData[i+2] > 250) || (imageData[i] < 5 && imageData[i+1] < 5 && imageData[i+2] < 5)) continue;
+        const r = imageData[i] >> 4, g = imageData[i + 1] >> 4, b = imageData[i + 2] >> 4;
+        const key = `${r},${g},${b}`;
+        colorBuckets[key] = (colorBuckets[key] || 0) + 1;
+    }
+    const sortedBuckets = Object.entries(colorBuckets).sort((a, b) => b[1] - a[1]);
+    return sortedBuckets.slice(0, count).map(bucket => {
+        const [r, g, b] = bucket[0].split(',').map(Number);
+        return [(r * quantizationFactor) + (quantizationFactor / 2), (g * quantizationFactor) + (quantizationFactor / 2), (b * quantizationFactor) + (quantizationFactor / 2)];
+    });
+}
+
+function findBestMatchingPalette() {
+    if (state.images.filter(img => img).length === 0) { alert("Please upload images first."); return; }
+    const dominantColors = getDominantColorsFromImage(state.images[0].img, 5);
+    if (dominantColors.length === 0) { alert("Could not determine dominant colors."); return; }
+    let bestPalette = null, lowestScore = Infinity;
+    (state.brandingPalette || defaultColorPalettes).forEach(palette => {
+        const paletteTextColorRgb = hexToRgb(palette.text);
+        const paletteStrokeColorRgb = hexToRgb(palette.stroke);
+        let currentPaletteScore = 0;
+        dominantColors.forEach(dominantRgb => {
+            currentPaletteScore += Math.min(colorDistance(dominantRgb, paletteTextColorRgb), colorDistance(dominantRgb, paletteStrokeColorRgb));
+        });
+        if (currentPaletteScore < lowestScore) { lowestScore = currentPaletteScore; bestPalette = palette; }
+    });
+    if (bestPalette) {
+        state.textColor = bestPalette.text;
+        state.textStrokeColor = bestPalette.stroke;
+        updateActiveSwatch();
+        drawCanvas();
+    }
+    if (lowestScore > 180) generatePaletteBtn.classList.remove('hidden');
+    else generatePaletteBtn.classList.add('hidden');
+}
+
+function generateAndApplyCustomPalette() {
+    const dominantColors = getDominantColorsFromImage(state.images[0].img, 5);
+    if (dominantColors.length < 2) { alert("Not enough distinct colors to generate a palette."); return; }
+    let newPalette = null;
+    for (let i = 0; i < dominantColors.length; i++) {
+        for (let j = i + 1; j < dominantColors.length; j++) {
+            const color1 = rgbToHex(...dominantColors[i]); const color2 = rgbToHex(...dominantColors[j]);
+            if (getContrast(color1, color2) >= 4.5) { newPalette = { text: color1, stroke: color2 }; break; }
+        }
+        if (newPalette) break;
+    }
+    if (!newPalette) {
+        const mainColorHex = rgbToHex(...dominantColors[0]);
+        if (getContrast(mainColorHex, '#FFFFFF') >= 4.5) newPalette = { text: '#FFFFFF', stroke: mainColorHex };
+        else if (getContrast(mainColorHex, '#000000') >= 4.5) newPalette = { text: '#000000', stroke: mainColorHex };
+        else newPalette = { text: '#FFFFFF', stroke: '#000000' };
+    }
+    state.textColor = newPalette.text; state.textStrokeColor = newPalette.stroke;
+    updateActiveSwatch();
+    drawCanvas();
+    generatePaletteBtn.classList.add('hidden');
+}
+
+function generateBrandingPalette() {
+    if (!state.logoImage) {
+        alert("Please upload a logo first.");
+        return;
+    }
+    const dominantColors = getDominantColorsFromImage(state.logoImage, 10);
+    if (dominantColors.length < 2) {
+        alert("Could not extract enough colors from the logo. Try a more colorful logo.");
+        return;
+    }
+
+    const newBrandingPalette = [];
+    for (let i = 0; i < dominantColors.length; i++) {
+        for (let j = i + 1; j < dominantColors.length; j++) {
+            const color1 = rgbToHex(...dominantColors[i]);
+            const color2 = rgbToHex(...dominantColors[j]);
+            if (getContrast(color1, color2) >= 4.5) {
+                newBrandingPalette.push({ name: `Brand ${newBrandingPalette.length + 1}`, text: color1, stroke: color2 });
             }
         }
-        
-        function drawTextWithSelectedStyle() {
-            const maxWidth = CANVAS_WIDTH - 60;
-            const { lines, fontSize, longestLine } = getFittedTextInfo(state.text, state.fontFamily, maxWidth);
-            const weight = getFontWeight(state.fontFamily);
-            ctx.font = `${weight} ${fontSize}px '${state.fontFamily}'`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
+    }
 
-            const lineHeight = fontSize * 1.1;
-            const totalTextHeight = lines.length * lineHeight;
-            const startY = (CANVAS_HEIGHT / 2) - (totalTextHeight / 2) + (lineHeight / 2);
+    if (newBrandingPalette.length === 0) {
+        alert("Could not generate a high-contrast palette from the logo. Please try a different logo.");
+        return;
+    }
 
-            ctx.save();
+    state.brandingPalette = newBrandingPalette;
+    populateColorPalette(state.brandingPalette);
+    state.textColor = newBrandingPalette[0].text;
+    state.textStrokeColor = newBrandingPalette[0].stroke;
+    updateActiveSwatch();
+    drawCanvas();
+}
 
-            switch (state.textDesign) {
-                case 'solid-pro':
-                    const padding = fontSize * 0.3;
-                    const bgWidth = ctx.measureText(longestLine).width + padding * 2;
-                    const bgHeight = totalTextHeight + padding;
-                    const bgX = (CANVAS_WIDTH / 2) - (bgWidth / 2);
-                    const bgY = (CANVAS_HEIGHT / 2) - (bgHeight / 2);
-                    ctx.fillStyle = state.textStrokeColor;
-                    ctx.fillRect(bgX, bgY, bgWidth, bgHeight);
-                    ctx.strokeStyle = state.textColor;
-                    ctx.lineWidth = 4;
-                    ctx.strokeRect(bgX + 2, bgY + 2, bgWidth - 4, bgHeight - 4);
-                    lines.forEach((line, index) => {
-                        const yPos = startY + (index * lineHeight);
-                        ctx.fillStyle = state.textColor;
-                        ctx.fillText(line, CANVAS_WIDTH / 2, yPos);
-                    });
-                    break;
-                case 'wave':
-                    lines.forEach((line, index) => {
-                        const yPos = startY + (index * lineHeight);
-                        const waveOffset = Math.sin(index * 1.5 + 1) * (fontSize * 0.15);
-                        const textMetrics = ctx.measureText(line);
-                        const inlinePadding = fontSize * 0.2;
-                        const rectWidth = textMetrics.width + (inlinePadding * 2);
-                        const rectHeight = lineHeight;
-                        ctx.fillStyle = state.textStrokeColor;
-                        ctx.fillRect( (CANVAS_WIDTH / 2) - (rectWidth / 2) + waveOffset, yPos - (rectHeight / 2), rectWidth, rectHeight );
-                        ctx.fillStyle = state.textColor;
-                        ctx.fillText(line, (CANVAS_WIDTH / 2) + waveOffset, yPos);
-                    });
-                    break;
-                case 'staggered':
-                     lines.forEach((line, index) => {
-                        const yPos = startY + (index * lineHeight);
-                        const staggerOffset = (index % 2 === 0 ? -1 : 1) * (fontSize * 0.15);
-                        const textMetrics = ctx.measureText(line);
-                        const inlinePadding = fontSize * 0.2;
-                        const rectWidth = textMetrics.width + (inlinePadding * 2);
-                        const rectHeight = lineHeight;
-                        ctx.fillStyle = state.textStrokeColor;
-                        ctx.fillRect( (CANVAS_WIDTH / 2) - (rectWidth / 2) + staggerOffset, yPos - (rectHeight / 2), rectWidth, rectHeight );
-                        ctx.fillStyle = state.textColor;
-                        ctx.fillText(line, (CANVAS_WIDTH / 2) + staggerOffset, yPos);
-                    });
-                    break;
-                case 'angled':
-                    ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
-                    ctx.rotate(-0.08); // ~ -4.5 degrees
-                    const angledPadding = fontSize * 0.3;
-                    const angledBgWidth = ctx.measureText(longestLine).width + angledPadding * 2;
-                    const angledBgHeight = totalTextHeight + angledPadding;
-                    ctx.fillStyle = state.textStrokeColor;
-                    ctx.fillRect(-angledBgWidth / 2, -angledBgHeight/2, angledBgWidth, angledBgHeight);
-                    lines.forEach((line, index) => {
-                        const yPos = - (totalTextHeight/2) + (lineHeight/2) + (index * lineHeight);
-                        ctx.fillStyle = state.textColor;
-                        ctx.fillText(line, 0, yPos);
-                    });
-                    break;
-            }
-            ctx.restore();
+function populateColorPalette(palettes) {
+    colorPaletteContainer.innerHTML = '';
+    palettes.forEach((palette) => {
+        const swatch = document.createElement('button');
+        swatch.className = 'w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-transform hover:scale-110';
+        swatch.style.background = `linear-gradient(135deg, ${palette.stroke} 65%, ${palette.text} 35%)`;
+        swatch.dataset.textColor = palette.text;
+        swatch.dataset.strokeColor = palette.stroke;
+        swatch.addEventListener('click', () => {
+            state.textColor = palette.text;
+            state.textStrokeColor = palette.stroke;
+            generatePaletteBtn.classList.add('hidden');
+            updateActiveSwatch();
+            drawCanvas();
+        });
+        colorPaletteContainer.appendChild(swatch);
+    });
+    updateActiveSwatch();
+}
+
+function updateActiveSwatch() {
+    document.querySelectorAll('#colorPalette button').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-violet-500');
+        if (btn.dataset.textColor === state.textColor && btn.dataset.strokeColor === state.textStrokeColor) {
+            btn.classList.add('ring-2', 'ring-violet-500');
         }
+    });
+}
 
-        function drawImage(imageState, rect) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(rect.x, rect.y, rect.width, rect.height);
-            ctx.clip();
-            
-            if (imageState && imageState.img) {
-                const containerAspect = rect.width / rect.height;
-                const imageAspect = imageState.originalWidth / imageState.originalHeight;
-                const scale = containerAspect > imageAspect ? rect.width / imageState.originalWidth : rect.height / imageState.originalHeight;
-                
-                const scaledWidth = imageState.originalWidth * scale;
-                const scaledHeight = imageState.originalHeight * scale;
-
-                const centerX = rect.x + (rect.width - scaledWidth) / 2;
-                const centerY = rect.y + (rect.height - scaledHeight) / 2;
-
-                const drawX = centerX + (imageState.dx || 0);
-                const drawY = centerY + (imageState.dy || 0);
-
-                ctx.drawImage(imageState.img, drawX, drawY, scaledWidth, scaledHeight);
-            } else {
-                ctx.fillStyle = '#E5E7EB';
-                ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-                ctx.fillStyle = '#9CA3AF';
-                ctx.font = "bold 30px 'Poppins'";
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(`SLOT`, rect.x + rect.width / 2, rect.y + rect.height / 2);
-            }
-            ctx.restore();
-        }
-
-        // --- Image Loading and Processing ---
-        function handleImageUpload(e) {
-            const files = e.target.files;
-            if (!files) return;
-            
-            state.images = []; // Clear old images
-            
-            for (let i = 0; i < files.length; i++) {
-                if (files[i]) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            state.images[i] = {
-                                img: img,
-                                originalWidth: img.width,
-                                originalHeight: img.height,
-                                dx: 0,
-                                dy: 0
-                            };
-                            drawCanvas();
-                        };
-                        img.src = event.target.result;
-                    };
-                    reader.readAsDataURL(files[i]);
-                }
-            }
-        }
-        
-        // --- Preferences ---
-        function savePreferences() {
-            const prefs = {
-                layout: state.layout,
-                fontFamily: state.fontFamily,
-                textColor: state.textColor,
-                textStrokeColor: state.textStrokeColor,
-                textDesign: state.textDesign,
-            };
-            localStorage.setItem('pinGenPrefs', JSON.stringify(prefs));
-            savePrefsBtn.classList.add('saved');
-            setTimeout(() => savePrefsBtn.classList.remove('saved'), 1500);
-        }
-
-        function loadPreferences() {
-            const savedPrefs = localStorage.getItem('pinGenPrefs');
-            if (savedPrefs) {
-                const prefs = JSON.parse(savedPrefs);
-                state = { ...state, ...prefs };
-                document.querySelector(`input[name="layout"][value="${state.layout}"]`).checked = true;
-                fontSelector.value = state.fontFamily;
-                textDesignSelector.value = state.textDesign;
-                document.querySelectorAll('#colorPalette button').forEach(btn => {
-                    btn.classList.remove('ring-2', 'ring-violet-500');
-                    if(btn.dataset.textColor === state.textColor) {
-                         btn.classList.add('ring-2', 'ring-violet-500');
+function handleImageUpload(e) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    state.allUploadedImages = [];
+    let loadedImagesCount = 0;
+    for (let i = 0; i < files.length; i++) {
+        if (files[i]) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    state.allUploadedImages[i] = { img: img, originalWidth: img.width, originalHeight: img.height, dx: 0, dy: 0 };
+                    loadedImagesCount++;
+                    if (loadedImagesCount === files.length) {
+                        updateVisibleImages();
+                        updateShuffleButtonVisibility();
+                        generatePaletteBtn.classList.add('hidden');
+                        drawCanvas();
                     }
-                });
-            }
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(files[i]);
         }
+    }
+}
 
-        // --- Event Listeners ---
-        imageInput.addEventListener('change', handleImageUpload);
-        pinTextInput.addEventListener('input', (e) => { state.text = e.target.value; drawCanvas(); });
-        fontSelector.addEventListener('change', (e) => { state.fontFamily = e.target.value; drawCanvas(); });
-        textDesignSelector.addEventListener('change', (e) => { state.textDesign = e.target.value; drawCanvas(); });
-        downloadButton.addEventListener('click', () => {
-            const link = document.createElement('a');
-            const filename = sanitizeFilename(state.text);
-            link.download = `${filename}.jpg`;
-            link.href = canvas.toDataURL('image/jpeg', 0.9);
-            link.click();
-        });
-        randomColorBtn.addEventListener('click', () => {
-            let textColor, strokeColor, contrast;
-            let attempts = 0;
-            
-            do {
-                textColor = generateRandomHexColor();
-                strokeColor = generateRandomHexColor();
-                contrast = getContrast(textColor, strokeColor);
-                attempts++;
-            } while (contrast < 4.5 && attempts < 100);
-
-            if (attempts >= 100) {
-                const randomPalette = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
-                textColor = randomPalette.text;
-                strokeColor = randomPalette.stroke;
-            }
-
-            state.textColor = textColor;
-            state.textStrokeColor = strokeColor;
-            
-            document.querySelectorAll('#colorPalette button').forEach(btn => btn.classList.remove('ring-2', 'ring-violet-500'));
+function handleLogoUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+            state.logoImage = img;
+            state.logoSrc = event.target.result;
+            generateBrandingBtn.classList.remove('hidden');
             drawCanvas();
-        });
-        layoutRadios.forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                state.layout = e.target.value;
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+function updateVisibleImages() {
+    const slots = layouts[state.layout].length;
+    state.images = state.allUploadedImages.slice(0, slots);
+}
+
+function updateShuffleButtonVisibility() {
+    const slots = layouts[state.layout].length;
+    if (state.allUploadedImages.length > slots) shuffleImagesBtn.classList.remove('hidden');
+    else shuffleImagesBtn.classList.add('hidden');
+}
+
+// --- Template & Preference Functions ---
+function savePreferences() {
+    const prefs = {
+        fontFamily: state.fontFamily,
+        textColor: state.textColor,
+        textStrokeColor: state.textStrokeColor,
+        textDesign: state.textDesign,
+        secondaryText: state.secondaryText,
+        logoSrc: state.logoSrc,
+    };
+    localStorage.setItem('pinGenPrefs', JSON.stringify(prefs));
+    savePrefsBtn.classList.add('saved');
+    setTimeout(() => savePrefsBtn.classList.remove('saved'), 1500);
+    alert('Default preferences saved!');
+}
+
+function loadPreferences() {
+    const savedPrefs = localStorage.getItem('pinGenPrefs');
+    if (savedPrefs) {
+        const prefs = JSON.parse(savedPrefs);
+        state.fontFamily = prefs.fontFamily || 'Oswald';
+        state.textColor = prefs.textColor || defaultColorPalettes[0].text;
+        state.textStrokeColor = prefs.textStrokeColor || defaultColorPalettes[0].stroke;
+        state.textDesign = prefs.textDesign || 'solid-pro';
+        state.secondaryText = prefs.secondaryText || '';
+        state.logoSrc = prefs.logoSrc || null;
+
+        secondaryTextInput.value = state.secondaryText;
+
+        populateColorPalette(defaultColorPalettes);
+
+        if (state.logoSrc) {
+            const img = new Image();
+            img.onload = () => {
+                state.logoImage = img;
+                generateBrandingBtn.classList.remove('hidden');
                 drawCanvas();
-            });
-        });
-        savePrefsBtn.addEventListener('click', savePreferences);
-
-        // --- Drag and Drop Logic ---
-        canvas.addEventListener('mousedown', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
-            const x = (e.clientX - rect.left) * scaleX, y = (e.clientY - rect.top) * scaleY;
-            const currentLayout = layouts[state.layout];
-            dragTargetIndex = currentLayout.findIndex(r => x > r.x && x < r.x + r.width && y > r.y && y < r.y + r.height);
-            if (dragTargetIndex !== -1 && state.images[dragTargetIndex]) {
-                isDragging = true;
-                startX = x;
-                startY = y;
-            }
-        });
-
-        canvas.addEventListener('mousemove', (e) => {
-            if (!isDragging || dragTargetIndex === -1) return;
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
-            const currentX = (e.clientX - rect.left) * scaleX, currentY = (e.clientY - rect.top) * scaleY;
-            const dx = currentX - startX, dy = currentY - startY;
-            const imageState = state.images[dragTargetIndex];
-            const layoutRect = layouts[state.layout][dragTargetIndex];
-            
-            imageState.dx += dx;
-            imageState.dy += dy;
-
-            const containerAspect = layoutRect.width / layoutRect.height;
-            const imageAspect = imageState.originalWidth / imageState.originalHeight;
-            const scale = containerAspect > imageAspect ? layoutRect.width / imageState.originalWidth : layoutRect.height / imageState.originalHeight;
-            const scaledWidth = imageState.originalWidth * scale;
-            const scaledHeight = imageState.originalHeight * scale;
-            
-            const max_dx = Math.max(0, (scaledWidth - layoutRect.width) / 2);
-            const max_dy = Math.max(0, (scaledHeight - layoutRect.height) / 2);
-
-            imageState.dx = Math.max(-max_dx, Math.min(max_dx, imageState.dx));
-            imageState.dy = Math.max(-max_dy, Math.min(max_dy, imageState.dy));
-            
-            startX = currentX;
-            startY = currentY;
-            drawCanvas();
-        });
-
-        canvas.addEventListener('mouseup', () => { isDragging = false; dragTargetIndex = -1; });
-        canvas.addEventListener('mouseleave', () => { isDragging = false; dragTargetIndex = -1; });
-        
-        // --- Initialization ---
-        function initialize() {
-            fonts.forEach(font => {
-                const option = document.createElement('option');
-                option.value = font;
-                option.textContent = font;
-                fontSelector.appendChild(option);
-            });
-            colorPalettes.forEach((palette, index) => {
-                const swatch = document.createElement('button');
-                swatch.className = 'w-10 h-10 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-transform hover:scale-110';
-                swatch.style.backgroundColor = palette.text;
-                swatch.style.borderColor = palette.stroke;
-                swatch.dataset.textColor = palette.text;
-                if (index === 0) swatch.classList.add('ring-2', 'ring-violet-500');
-                swatch.addEventListener('click', () => {
-                    state.textColor = palette.text;
-                    state.textStrokeColor = palette.stroke;
-                    document.querySelectorAll('#colorPalette button').forEach(btn => btn.classList.remove('ring-2', 'ring-violet-500'));
-                    swatch.classList.add('ring-2', 'ring-violet-500');
-                    drawCanvas();
-                });
-                colorPaletteContainer.appendChild(swatch);
-            });
-            
-            loadPreferences();
-            drawCanvas();
+            };
+            img.src = state.logoSrc;
         }
+    }
+}
 
-        initialize();
-    </script>
+function getCurrentStyleAsObject() {
+    return {
+        fontFamily: state.fontFamily,
+        textColor: state.textColor,
+        textStrokeColor: state.textStrokeColor,
+        textDesign: state.textDesign,
+        secondaryText: state.secondaryText,
+        logoSrc: state.logoSrc,
+        brandingPalette: state.brandingPalette,
+    };
+}
+
+function saveTemplate() {
+    const selectedTemplateName = templateSelector.value;
+
+    if (selectedTemplateName) {
+        if (confirm(`Are you sure you want to update the template "${selectedTemplateName}" with the current style?`)) {
+            let templates = JSON.parse(localStorage.getItem('pinGenTemplates') || '[]');
+            const templateIndex = templates.findIndex(t => t.name === selectedTemplateName);
+            if (templateIndex !== -1) {
+                templates[templateIndex] = { name: selectedTemplateName, ...getCurrentStyleAsObject() };
+                localStorage.setItem('pinGenTemplates', JSON.stringify(templates));
+                alert(`Template "${selectedTemplateName}" updated!`);
+            }
+        }
+    } else {
+        const name = prompt("Enter a name for this new template:");
+        if (!name) return;
+        let templates = JSON.parse(localStorage.getItem('pinGenTemplates') || '[]');
+        if (templates.some(t => t.name === name)) {
+            alert("A template with this name already exists. Please choose a different name.");
+            return;
+        }
+        const newTemplate = { name, ...getCurrentStyleAsObject() };
+        templates.push(newTemplate);
+        localStorage.setItem('pinGenTemplates', JSON.stringify(templates));
+        populateTemplatesDropdown();
+        templateSelector.value = name;
+        updateTemplateButtons();
+        alert(`Template "${name}" saved!`);
+    }
+}
+
+function deleteTemplate() {
+    const templateName = templateSelector.value;
+    if (!templateName) return;
+
+    if (confirm(`Are you sure you want to delete the template "${templateName}"?`)) {
+        let templates = JSON.parse(localStorage.getItem('pinGenTemplates') || '[]');
+        templates = templates.filter(t => t.name !== templateName);
+        localStorage.setItem('pinGenTemplates', JSON.stringify(templates));
+        populateTemplatesDropdown();
+        alert(`Template "${templateName}" deleted.`);
+    }
+}
+
+function loadTemplate(templateName) {
+    if (!templateName) {
+        state.brandingPalette = null;
+        populateColorPalette(defaultColorPalettes);
+        updateTemplateButtons();
+        return;
+    };
+    const templates = JSON.parse(localStorage.getItem('pinGenTemplates') || '[]');
+    const template = templates.find(t => t.name === templateName);
+    if (!template) return;
+
+    state.fontFamily = template.fontFamily;
+    state.textColor = template.textColor;
+    state.textStrokeColor = template.textStrokeColor;
+    state.textDesign = template.textDesign;
+    state.secondaryText = template.secondaryText;
+    state.logoSrc = template.logoSrc;
+    state.brandingPalette = template.brandingPalette || null;
+
+    secondaryTextInput.value = state.secondaryText;
+
+    populateColorPalette(state.brandingPalette || defaultColorPalettes);
+    updateActiveSwatch();
+
+    if (state.logoSrc) {
+        const img = new Image();
+        img.onload = () => { state.logoImage = img; generateBrandingBtn.classList.remove('hidden'); drawCanvas(); };
+        img.src = state.logoSrc;
+    } else {
+        state.logoImage = null;
+        generateBrandingBtn.classList.add('hidden');
+    }
+    drawCanvas();
+}
+
+function updateTemplateButtons() {
+    const selectedTemplate = templateSelector.value;
+    if (selectedTemplate) {
+        saveTemplateBtn.textContent = 'Update';
+        saveTemplateBtn.title = 'Update Selected Template';
+        deleteTemplateBtn.classList.remove('hidden');
+    } else {
+        saveTemplateBtn.textContent = 'Save New';
+        saveTemplateBtn.title = 'Save Current Style as New Template';
+        deleteTemplateBtn.classList.add('hidden');
+    }
+}
+
+function populateTemplatesDropdown() {
+    const currentVal = templateSelector.value;
+    const templates = JSON.parse(localStorage.getItem('pinGenTemplates') || '[]');
+    templateSelector.innerHTML = '<option value="">Load a template...</option>';
+    templates.forEach(t => {
+        const option = document.createElement('option');
+        option.value = t.name;
+        option.textContent = t.name;
+        templateSelector.appendChild(option);
+    });
+    if (templates.some(t => t.name === currentVal)) {
+        templateSelector.value = currentVal;
+    }
+    updateTemplateButtons();
+}
+
+// --- Event Listeners ---
+imageInput.addEventListener('change', handleImageUpload);
+logoInput.addEventListener('change', handleLogoUpload);
+pinTextInput.addEventListener('input', (e) => { state.text = e.target.value; drawCanvas(); });
+secondaryTextInput.addEventListener('input', (e) => { state.secondaryText = e.target.value; drawCanvas(); });
+downloadButton.addEventListener('click', () => {
+    const link = document.createElement('a');
+    const filename = sanitizeFilename(state.text);
+    link.download = `${filename}.jpg`;
+    link.href = canvas.toDataURL('image/jpeg', 0.9);
+    link.click();
+});
+savePrefsBtn.addEventListener('click', savePreferences);
+autoColorBtn.addEventListener('click', findBestMatchingPalette);
+generatePaletteBtn.addEventListener('click', generateAndApplyCustomPalette);
+generateBrandingBtn.addEventListener('click', generateBrandingPalette);
+saveTemplateBtn.addEventListener('click', saveTemplate);
+deleteTemplateBtn.addEventListener('click', deleteTemplate);
+templateSelector.addEventListener('change', (e) => {
+    loadTemplate(e.target.value);
+    updateTemplateButtons();
+});
+
+swapImagesBtn.addEventListener('click', () => {
+    const unlockedSlots = [];
+    state.images.forEach((img, i) => { if (img && !state.locks[i]) unlockedSlots.push({ index: i, image: img }); });
+    if (unlockedSlots.length > 1) {
+        const imagesToSwap = unlockedSlots.map(slot => slot.image);
+        imagesToSwap.unshift(imagesToSwap.pop());
+        unlockedSlots.forEach((slot, i) => { state.images[slot.index] = imagesToSwap[i]; });
+        drawCanvas();
+    }
+});
+
+shuffleImagesBtn.addEventListener('click', () => {
+    const unlockedSlots = [];
+    const unlockedIndices = [];
+    state.images.forEach((img, i) => {
+        if (!state.locks[i]) {
+            unlockedSlots.push(img);
+            unlockedIndices.push(i);
+        }
+    });
+    const visibleImageSources = state.images.map(img => img ? img.img.src : null);
+    const imagesNotOnCanvas = state.allUploadedImages.filter(img => !visibleImageSources.includes(img.img.src));
+    let poolToShuffle = [...unlockedSlots.filter(Boolean), ...imagesNotOnCanvas];
+    for (let i = poolToShuffle.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [poolToShuffle[i], poolToShuffle[j]] = [poolToShuffle[j], poolToShuffle[i]];
+    }
+    unlockedIndices.forEach(i => { state.images[i] = poolToShuffle.shift() || null; });
+    drawCanvas();
+});
+
+// --- Mouse and Touch Logic ---
+canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX, y = (e.clientY - rect.top) * scaleY;
+    let lockClicked = false;
+    layouts[state.layout].forEach((rect, index) => {
+        if (!state.images[index]) return;
+        const iconSize = 40, padding = 15;
+        const iconX = rect.x + rect.width - iconSize / 2 - padding;
+        const iconY = rect.y + iconSize / 2 + padding;
+        if (Math.sqrt(Math.pow(x - iconX, 2) + Math.pow(y - iconY, 2)) < (iconSize / 2 + 5)) {
+            state.locks[index] = !state.locks[index];
+            lockClicked = true;
+        }
+    });
+    if (lockClicked) { drawCanvas(); return; }
+    dragTargetIndex = layouts[state.layout].findIndex(r => x > r.x && x < r.x + r.width && y > r.y && y < r.y + r.height);
+    if (dragTargetIndex !== -1 && state.images[dragTargetIndex]) { isDragging = true; startX = x; startY = y; }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+    if (!isDragging || dragTargetIndex === -1) return;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height;
+    const currentX = (e.clientX - rect.left) * scaleX, currentY = (e.clientY - rect.top) * scaleY;
+    const dx = currentX - startX, dy = currentY - startY;
+    const imageState = state.images[dragTargetIndex];
+    const layoutRect = layouts[state.layout][dragTargetIndex];
+    imageState.dx += dx; imageState.dy += dy;
+    const containerAspect = layoutRect.width / layoutRect.height;
+    const imageAspect = imageState.originalWidth / imageState.originalHeight;
+    const scale = containerAspect > imageAspect ? layoutRect.width / imageState.originalWidth : layoutRect.height / imageState.originalHeight;
+    const scaledWidth = imageState.originalWidth * scale; const scaledHeight = imageState.originalHeight * scale;
+    const max_dx = Math.max(0, (scaledWidth - layoutRect.width) / 2);
+    const max_dy = Math.max(0, (scaledHeight - layoutRect.height) / 2);
+    imageState.dx = Math.max(-max_dx, Math.min(max_dx, imageState.dx));
+    imageState.dy = Math.max(-max_dy, Math.min(max_dy, imageState.dy));
+    startX = currentX; startY = currentY;
+    drawCanvas();
+});
+
+canvas.addEventListener('mouseup', () => { isDragging = false; dragTargetIndex = -1; });
+canvas.addEventListener('mouseleave', () => { isDragging = false; dragTargetIndex = -1; });
+
+// --- Initialization ---
+function initialize() {
+    populateColorPalette(defaultColorPalettes);
+    populateTemplatesDropdown();
+    loadPreferences();
+    drawCanvas();
+}
+
+initialize();
+</script>
 
 </body>
 </html>
